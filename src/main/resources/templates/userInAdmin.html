@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+
+<body>
+<div>
+    <table>
+        <tr>
+            <th th:text="${user.email}">email</th>
+            <th>with roles:</th>
+            <th th:text="${user.getRolesToString()}">Role</th>
+        </tr>
+    </table>
+</div>
+<br>
+<div>
+    <table>
+        <tr>
+            <th><a href="/admin">Admin</a></th>
+            <th><a href="/{id}">User</a></th>
+        </tr>
+    </table>
+</div>
+<br>
+<table border="4">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>LastName</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Role</th>
+    </tr>
+    <tr>
+        <td th:text="${user.id}">ID</td>
+        <td th:text="${user.name}">Name</td>
+        <td th:text="${user.lastName}">LastName</td>
+        <td th:text="${user.age}">Age</td>
+        <td th:text="${user.email}">Email</td>
+        <td th:text="${user.roles}">Role</td>
+    </tr>
+</table>
+<br>
+<nav>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
+</nav>
+</body>
+</html>
