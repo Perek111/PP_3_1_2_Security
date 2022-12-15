@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +22,7 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @Column(name = "name")
+    @NotEmpty(message = "Name of role should not be empty")
     private String name;
 
     @Transient

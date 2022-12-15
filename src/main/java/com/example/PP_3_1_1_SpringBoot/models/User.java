@@ -1,11 +1,11 @@
 package com.example.PP_3_1_1_SpringBoot.models;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
+
+import javax.validation.constraints.*;
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
@@ -18,16 +18,23 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "first_name")
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 3, max = 32, message = "Name should be between 3 and 32 characters")
     private String name;
 
     @Column(name = "last_name")
+    @NotEmpty(message = "Lastname should not be empty")
+    @Size(min = 3, max = 32, message = "Lastname should be between 3 and 32 characters")
     private String lastName;
 
     @Column(name = "age")
+    @Min(value = 0, message = "Age should not be less 0")
+    @Max(value = 150, message = "Age should not be more 150")
     private Integer age;
 
     @Column(name = "email")
-    @Email
+    @NotEmpty(message = "Email should not be empty")
+    @Email(message = "Not valid email")
     private String email;
 
     @Column(name = "password")
@@ -46,10 +53,10 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.id = id;
         this.roles = roles;
         this.age = age;
     }
+
 
     public Long getId() {
         return id;

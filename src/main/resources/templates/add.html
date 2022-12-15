@@ -23,7 +23,7 @@
     <table>
         <tr>
             <th><a href="/admin">Admin</a></th>
-            <th><a href="/{id}">User</a></th>
+            <th><a th:href="@{{id}(id=${user.id})}">User</a></th>
         </tr>
     </table>
 </div>
@@ -33,29 +33,35 @@
 </div>
 
 <div>
-    <form th:action="@{/add}" th:object="${user}" method="POST">
+    <form th:action="@{add}" th:object="${user}" method="POST">
         <label for="name">Name</label>
         <input th:name="name" th:type="text" id="name" placeholder="Enter name"><br>
+        <div style="color:gray" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error text</div><br>
 
         <label for="lastName">LastName</label>
-        <input th:name="lastName" th:type="text" id="lastName" placeholder="Enter lastName"><br>
+        <input th:name="lastName" th:type="text" id="lastName" placeholder="Enter lastname"><br>
+        <div style="color:gray" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error text</div><br>
 
-        <label for="age">Age</label>
-        <input th:name="age" th:type="number" min="0" max="127" id="age" placeholder="Enter age"><br>
+        <label min="0" max="127" for="age">Age</label>
+        <input th:name="age" th:type="number" id="age" placeholder="Enter age"><br>
+        <div style="color:gray" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Error text</div><br>
 
         <label for="email">Email</label>
         <input th:name="email" th:type="text" id="email" placeholder="Enter email"><br>
+        <div style="color:gray" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error text</div><br>
 
         <label for="password">Password</label>
         <input th:name="name" th:field="*{password}" th:type="password" id="password" placeholder="Enter password"><br>
+        <div style="color:gray" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error text</div><br>
 
-        <label for="roleAdmin"><b>Role</b></label>
+        <label for="roleAdmin">Role</label>
         <select multiple id="roleAdmin" name="roleAdmin" size="2"
                 required>
             <option th:value="ADMIN" th:checked="user.roles" th:text="ADMIN"></option>
             <option th:value="USER" th:checked="user.roles" th:text="USER"></option>
         </select>
         <br><br>
+
         <button th:type="submit" value="Add new user">Add new user</button>
     </form>
 </div>

@@ -8,19 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
 @Controller
-@RequestMapping()
+@RequestMapping("/admin")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
-    private UserService userService;
-    private RoleService roleService;
+    private final UserService userService;
+    private final RoleService roleService;
 
 
     @Autowired
@@ -29,7 +31,7 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/admin")
+    @GetMapping()
     public String users(Principal principal, Model model) {
         model.addAttribute("users", userService.findAll());
         model.addAttribute("user", userService.loadUserByUsername(principal.getName()));
@@ -42,7 +44,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "admin/{id}/edit")
+    @GetMapping(value = "/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.findById(id));
         return "editPage";
@@ -55,27 +57,30 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}/edit")
-    public String editUser(@ModelAttribute("user") User user,
-                           @RequestParam(required = false) String roleAdmin) {
+    public String editUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+                           @RequestParam(required = false) String roleAdmin, @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors())
+            return "editPage";
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.findByName("USER"));
         if (roleAdmin != null && roleAdmin.equals("ADMIN")) {
             roles.add(roleService.findByName("ADMIN"));
         }
         user.setRoles(roles);
-        userService.update(user);
+        userService.update(id, user);
         return "redirect:/admin";
     }
 
     @PostMapping("/add")
-    public String addUser(@ModelAttribute("user") User user,
+    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                           @RequestParam(required = false) String roleAdmin) {
+        if (bindingResult.hasErrors())
+            return "add";
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.findByName("USER"));
         if (roleAdmin != null && roleAdmin.equals("ADMIN")) {
             roles.add(roleService.findByName("ADMIN"));
         }
-
         user.setRoles(roles);
         userService.save(user);
         return "redirect:/admin";

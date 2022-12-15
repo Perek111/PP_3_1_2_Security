@@ -22,7 +22,7 @@
     <table>
         <tr>
             <th><a href="/admin">Admin</a></th>
-            <th><a href="/{id}">User</a></th>
+            <th><a th:href="@{{id}(id=${user.id})}">User</a></th>
         </tr>
     </table>
 </div>

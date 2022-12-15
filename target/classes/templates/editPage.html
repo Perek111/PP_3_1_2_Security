@@ -23,7 +23,7 @@
   <table>
     <tr>
       <th><a href="/admin">Admin</a></th>
-      <th><a href="/{id}">User</a></th>
+      <th><a th:href="@{/admin/{id}(id=${user.id})}">User</a></th>
     </tr>
   </table>
 </div>
@@ -33,24 +33,34 @@
 </div>
 
 <div>
-  <form th:method="PATCH" th:action="@{{id}/edit(id=${user.id})}" th:object="${user}">
+  <form th:method="PATCH" th:action="@{edit}" th:object="${user}">
     <label for="name">Name</label>
-    <input type="text" th:field="*{name}" id="name">
+    <input type="text" th:field="*{name}" id="name" placeholder="Enter name">
+    <div style="color:gray" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error text</div><br>
 
-    <br>
     <label for="lastName">Lastname</label>
-    <input type="text" th:field="*{lastName}" id="lastName">
-    <br>
+    <input type="text" th:field="*{lastName}" id="lastName" placeholder="Enter lastname">
+    <div style="color:gray" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error text</div><br>
+
     <label for="age">Age</label>
-    <input type="number" th:field="*{age}" id="age">
-    <br>
+    <input min="0" max="127" type="number" th:field="*{age}" id="age" placeholder="Enter age">
+    <div style="color:gray" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Error text</div><br>
+
     <label for="email">Email</label>
-    <input type="text" th:field="*{email}" id="email">
-    <br>
+    <input type="text" th:field="*{email}" id="email" placeholder="Enter email">
+    <div style="color:gray" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error text</div><br>
+
     <label for="password">Password</label>
-    <input type="text" th:field="*{password}" id="password">
-    <br>
-    <br>
+    <input type="text" th:field="*{password}" id="password" placeholder="Enter password" th:text="${password}">
+    <div style="color:gray" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error text</div>
+
+    <label for="role">Role</label>
+    <select size="2" id="role" multiple name="role" required="required">
+      <option selected="selected" value="1">USER</option>
+      <option value="2">ADMIN</option>
+    </select>
+    <br><br>
+
     <input type="submit" value="Update">
   </form>
 </div>

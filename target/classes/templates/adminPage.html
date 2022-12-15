@@ -23,7 +23,7 @@
     <table>
         <tr>
             <th><a href="/admin">Admin</a></th>
-            <th><a href="/{id}">User</a></th>
+            <th><a th:href="@{admin/{id}(id=${user.id})}">User</a></th>
         </tr>
     </table>
 </div>
@@ -52,14 +52,14 @@
         <td th:text="${user.roles}">Role</td>
         <td><a th:href="@{admin/{id}/edit(id=${user.id})}">Edit</a></td>
         <td>
-            <form th:method="DELETE" th:action="@{{id}/delete(id=${user.id})}">
+            <form th:method="DELETE" th:action="@{admin/{id}/delete(id=${user.id})}">
                 <input type="submit" value="Delete">
             </form>
         </td>
     </tr>
 </table>
 <br>
-<a th:href="@{/add}">Add new user</a>
+<a th:href="@{admin/add}">Add new user</a>
 <br><br>
 <nav>
     <form th:action="@{/logout}" method="post">
