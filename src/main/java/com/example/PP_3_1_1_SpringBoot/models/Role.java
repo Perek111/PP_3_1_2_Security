@@ -1,16 +1,9 @@
 package com.example.PP_3_1_1_SpringBoot.models;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -25,9 +18,6 @@ public class Role implements GrantedAuthority {
     @NotEmpty(message = "Name of role should not be empty")
     private String name;
 
-    @Transient
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles", cascade = CascadeType.MERGE)
-    private List<User> users = new ArrayList<>();
 
     public Role() {}
 
@@ -49,14 +39,6 @@ public class Role implements GrantedAuthority {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     @Override
